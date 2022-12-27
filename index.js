@@ -4,13 +4,16 @@ const text = 'Правила переноса слов рекомендуют п
 
 const regex = /[бвгджзйклмнпрстфхцчшщ]+[аеёиоуыэюя][бвгджзйклмнпрстфхцчшщ](?=[бвгджзйклмнпрстфхцчшщьъ ])[ьъй]?|[бвгджзйклмнпрстфхцчшщ]+[аеёиоуыэюя][й]?|[аеёиоуыэюя][бвгджзйклмнпрстфхцчшщ](?=[бвгджзйклмнпрстфхцчшщьъ ])[ъь]?|[аеёиоуыэюя](?=[а-я]{2})|(?<= +)[^\s]+(?= +|$)/gmi;
 
-function wordWrap(text, limit) {
+function wordWrap(text, element) {
+  fz = window.getComputedStyle(element).fontSize
+  width = +fz.substring(0, fz.length - 2)
+  limit = element.clientWidth / width * 2
+
   let out = '';
   let offset = 0; 
   let prev = 0;
   let pass = false;
   let matches = text.matchAll(regex);
-
   for (const m of matches) {
     if (m.index - offset > limit) {
       let hyphen = text[prev - 1] == ' ' ? '' : '-';
@@ -28,8 +31,5 @@ function wordWrap(text, limit) {
 
 
 items.forEach(element => {
-  fz = window.getComputedStyle(element).fontSize
-  width = +fz.substring(0, fz.length - 2)
-  count_letter = element.clientWidth / width * 2
-  element.innerText = wordWrap(text, count_letter)
+  element.innerText = wordWrap(text, element)
 })

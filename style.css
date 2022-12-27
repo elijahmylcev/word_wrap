@@ -5,4 +5,5 @@
 
 .wrapper__item {
   word-wrap: break-word;
+  font-size: 14px;
 }
